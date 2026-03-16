@@ -1,19 +1,23 @@
 1class Solution {
 2public:
-3    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-4      int index=m+n-1, i=m-1, j=n-1;
-5      while(i>=0 && j>=0)
-6      {
-7        if(nums1[i]>nums2[j])
-8        {
-9            nums1[index--]=nums1[i--];
-10        }
-11        else{
-12            nums1[index--]=nums2[j--];
+3
+4    void subset(int idx, vector<int>& nums, vector<vector<int>>& ans, vector<int>& ds, int n){
+5        ans.push_back(ds);
+6
+7        for(int i=idx; i<nums.size(); i++){
+8            if(i>idx && nums[i]==nums[i-1]) continue;
+9
+10            ds.push_back(nums[i]);
+11            subset(i+1, nums, ans, ds, n);
+12            ds.pop_back();
 13        }
-14      }
-15      while(j>=0){
-16        nums1[index--]=nums2[j--];
-17      }
-18    }
-19};
+14    }
+15    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+16        vector<vector<int>> ans;
+17        int n=nums.size();
+18        vector<int> ds;
+19        sort(nums.begin(), nums.end());
+20        subset(0, nums, ans, ds, n);
+21        return ans;
+22    }
+23};
