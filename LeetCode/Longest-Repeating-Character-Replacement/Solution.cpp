@@ -10,7 +10,7 @@
 10            freq[s[r] - 'A']++;
 11            maxFreq = max(maxFreq, freq[s[r] - 'A']);
 12
-13            while ((r - l + 1) - maxFreq > k) {
+13            if ((r - l + 1) - maxFreq > k) {
 14                freq[s[l] - 'A']--;
 15                l++;
 16            }
