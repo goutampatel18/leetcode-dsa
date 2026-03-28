@@ -1,0 +1,49 @@
+1const int MOD =1e9+7;
+2class Solution {
+3public:
+4    int countArrays(vector<int>& ds) {
+5        int n = ds.size();
+6
+7        vector<vector<int>> nums(51);
+8        for(int x=0; x<=5000; x++){
+9            int s=0, t=x;
+10        while(t){
+11            s+=t%10;
+12            t/=10;
+13        }
+14        nums[s].push_back(x);
+15        }
+16
+17        //edsge
+18        if(nums[ds[0]].empty()) return 0;
+19        vector<vector<int>> dp(n);
+20        dp[0] =vector<int>(nums[ds[0]].size(), 1);
+21
+22        for(int i=1; i<n; i++){
+23            auto &prev=nums[ds[i-1]];
+24            auto &curr = nums[ds[i]];
+25            if(curr.empty()) return 0;
+26            dp[i]= vector<int>(curr.size(), 0);
+27
+28            vector<int> pref(prev.size());
+29            pref[0]= dp[i-1][0];
+30            for(int k=1; k<prev.size(); k++){
+31                pref[k]= (pref[k-1]+ dp[i-1][k]) % MOD;
+32            }
+33            int k=0;
+34            for(int j=0; j<curr.size(); j++){
+35                while(k<prev.size() && prev[k] <=curr[j]){
+36                    k++;
+37                }
+38                if(k>0){
+39                    dp[i][j]=pref[k-1];
+40                    }
+41            }
+42        }
+43        int ans=0;
+44        for(int x:dp[n-1]){
+45            ans=(ans+x) % MOD;
+46        }
+47        return ans;
+48    }
+49};
