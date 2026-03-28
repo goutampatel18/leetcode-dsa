@@ -1,0 +1,33 @@
+1const int MAXX=1024;
+2class Solution {
+3public:
+4    
+5    int minCost(vector<vector<int>>& grid) {
+6        
+7        int m = grid.size(), n=grid[0].size();
+8
+9        vector<vector<bitset<MAXX>>> dp(m, vector<bitset<MAXX>>(n));
+10        dp[0][0][grid[0][0]]=1;
+11
+12        for(int i=0; i<m; i++){
+13            for(int j=0; j<n; j++){
+14                for(int x=0; x<MAXX; x++){
+15                    if(!dp[i][j][x]) continue;
+16                    if(j+1<n){
+17                        dp[i][j+1][x^grid[i][j+1]] =1;
+18                    }
+19
+20                    if(i+1<m){
+21                        dp[i+1][j][x^grid[i+1][j]]=1;
+22                    }
+23                }
+24            }
+25        }
+26        for(int x=0; x<MAXX; x++){
+27            if(dp[m-1][n-1][x]){
+28                return x;
+29            }
+30        }
+31        return -1;
+32    }
+33};
